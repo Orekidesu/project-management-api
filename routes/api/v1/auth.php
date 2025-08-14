@@ -1,5 +1,7 @@
 <?php
 
+
+// All auth must be auth:Sanctum
 use App\Http\Controllers\Api\V1\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Api\V1\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Api\V1\Auth\NewPasswordController;
@@ -25,13 +27,13 @@ Route::post('/reset-password', [NewPasswordController::class, 'store'])
   ->name('password.store');
 
 Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
-  ->middleware(['auth', 'signed', 'throttle:6,1'])
+  ->middleware(['auth:sanctum', 'signed', 'throttle:6,1'])
   ->name('verification.verify');
 
 Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-  ->middleware(['auth', 'throttle:6,1'])
+  ->middleware(['auth:sanctum', 'throttle:6,1'])
   ->name('verification.send');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-  ->middleware('auth')
+  ->middleware('auth:sanctum')
   ->name('logout');
